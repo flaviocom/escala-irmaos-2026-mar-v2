@@ -53,14 +53,14 @@ export const StatsView: React.FC<StatsViewProps> = ({ shifts }) => {
         </div>
       </div>
 
-      <div className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-border-subtle text-text-sm">
-          <thead className="bg-surface-subtle">
+      <div className="overflow-x-auto overflow-y-auto max-h-[60vh]">
+        <table className="min-w-full divide-y divide-border-subtle text-text-sm relative">
+          <thead className="bg-surface-subtle sticky top-0 z-20 shadow-sm">
             <tr>
-              <th className="px-space-4 py-space-3 text-left font-semibold text-text-secondary uppercase tracking-wider text-text-xs sticky left-0 bg-surface-subtle z-10">Irmão</th>
-              <th className="px-space-4 py-space-3 text-center font-semibold text-action-primary uppercase tracking-wider text-text-xs bg-surface-subtle">Total</th>
+              <th className="px-space-4 py-space-3 text-left font-semibold text-text-secondary uppercase tracking-wider text-text-xs sticky left-0 top-0 bg-surface-subtle z-30 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.05)] border-b border-border-subtle">Irmão</th>
+              <th className="px-space-4 py-space-3 text-center font-semibold text-action-primary uppercase tracking-wider text-text-xs bg-surface-subtle border-b border-border-subtle">Total</th>
               {months.map(m => (
-                <th key={m} className="px-space-2 py-space-3 text-center font-semibold text-text-secondary uppercase tracking-wider text-[10px]">
+                <th key={m} className="px-space-2 py-space-3 text-center font-semibold text-text-secondary uppercase tracking-wider text-[10px] bg-surface-subtle border-b border-border-subtle">
                   {format(parseISO(m), 'MMM', { locale: ptBR }).replace(/^\w/, c => c.toUpperCase())}
                 </th>
               ))}
