@@ -51,7 +51,7 @@ function App() {
     setIsMobileMenuOpen(false); // Fechar menu no mobile após exportar
   };
 
-  const SidebarContent = () => (
+  const sidebarContent = (
     <div className="flex flex-col h-full bg-white px-5 py-6 overflow-y-auto">
       {/* Desktop Logo (hidden on mobile drawer since header has it or keep it for brand context) */}
       <div className="flex items-center gap-3 mb-8">
@@ -178,7 +178,7 @@ function App() {
 
       {/* Sidebar Desktop */}
       <aside className="hidden md:flex flex-col w-[320px] fixed inset-y-0 left-0 border-r border-gray-200 z-40 bg-white shadow-sm">
-        <SidebarContent />
+        {sidebarContent}
       </aside>
 
       {/* Drawer Mobile */}
@@ -197,7 +197,7 @@ function App() {
             >
               <X className="w-5 h-5 text-gray-700" />
             </button>
-            <SidebarContent />
+            {sidebarContent}
           </div>
         </div>
       )}

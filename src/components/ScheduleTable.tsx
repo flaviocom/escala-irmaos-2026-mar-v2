@@ -36,6 +36,7 @@ export const ScheduleTable: React.FC<ScheduleTableProps> = ({
       // 2. Text Search Filter (Date or Day)
       if (dateSearchQuery) {
         const query = dateSearchQuery.toLowerCase().trim();
+        let isDateRangeText = false;
 
         // Skip text search if it matches the range exactly (avoid redundancy)
         if (dateRange?.start && dateRange?.end) {
@@ -43,25 +44,29 @@ export const ScheduleTable: React.FC<ScheduleTableProps> = ({
             ? format(dateRange.start, 'dd/MM/yyyy')
             : `${format(dateRange.start, 'dd/MM')} - ${format(dateRange.end, 'dd/MM')}`;
 
-          if (query === rangeStr.toLowerCase()) return true;
+          if (query === rangeStr.toLowerCase()) {
+            isDateRangeText = true;
+          }
         }
 
-        const dateStrFull = format(shift.date, 'dd/MM/yyyy');
-        const dateStrShort = format(shift.date, 'dd/MM');
-        const dateStrNoZero = format(shift.date, 'd/M');
-        const dateStrNoZeroFull = format(shift.date, 'd/M/yyyy');
-        const monthName = format(shift.date, 'MMMM', { locale: ptBR }).toLowerCase();
-        const dayName = format(shift.date, 'EEEE', { locale: ptBR }).toLowerCase();
+        if (!isDateRangeText) {
+          const dateStrFull = format(shift.date, 'dd/MM/yyyy');
+          const dateStrShort = format(shift.date, 'dd/MM');
+          const dateStrNoZero = format(shift.date, 'd/M');
+          const dateStrNoZeroFull = format(shift.date, 'd/M/yyyy');
+          const monthName = format(shift.date, 'MMMM', { locale: ptBR }).toLowerCase();
+          const dayName = format(shift.date, 'EEEE', { locale: ptBR }).toLowerCase();
 
-        const matchesDate =
-          dateStrFull.includes(query) ||
-          dateStrShort.includes(query) ||
-          dateStrNoZero.includes(query) ||
-          dateStrNoZeroFull.includes(query) ||
-          monthName.includes(query);
+          const matchesDate =
+            dateStrFull.includes(query) ||
+            dateStrShort.includes(query) ||
+            dateStrNoZero.includes(query) ||
+            dateStrNoZeroFull.includes(query) ||
+            monthName.includes(query);
 
-        if (!matchesDate && !dayName.includes(query)) {
-          return false;
+          if (!matchesDate && !dayName.includes(query)) {
+            return false;
+          }
         }
       }
 
@@ -189,7 +194,7 @@ export const ScheduleTable: React.FC<ScheduleTableProps> = ({
           </div>
 
           {/* Unified Card View (Desktop & Mobile) */}
-          <div className="space-y-3">
+          <div className="space-y-3 px-4 pb-4 md:px-6 md:pb-6">
             {monthShifts.map((shift) => {
               const isSelected = selectedBrotherIds.length > 0 && shift.assignedBrothers.some(id => selectedBrotherIds.includes(id));
               const isSantaCeia = shift.type === 'SANTA_CEIA';
@@ -210,7 +215,7 @@ export const ScheduleTable: React.FC<ScheduleTableProps> = ({
                   className={clsx(
                     "group relative flex flex-row items-center gap-2 p-3 rounded-xl border transition-all duration-200 scroll-mt-[200px]",
                     "bg-white hover:shadow-md hover:border-action-primary/30",
-                    isSelected ? "ring-2 ring-amber-400 shadow-md z-10" : "border-gray-200 shadow-sm"
+                    isSelected ? "ring-2 ring-inset ring-amber-400 border-amber-400 shadow-md z-10" : "border-gray-200 shadow-sm"
                   )}
                 >
                   {/* Left Accent Border (Visual) */}
