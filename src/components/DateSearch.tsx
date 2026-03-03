@@ -89,7 +89,10 @@ export const DateSearch: React.FC<DateSearchProps> = ({ value, onChange, onDateR
           value={value}
           onChange={handleTextChange}
           placeholder="Buscar data (ex: 25/12) ou dia..."
-          className="w-full pl-10 pr-24 h-12 bg-white border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-black/5 focus:border-gray-300 transition-all shadow-sm"
+          className={clsx(
+            "w-full pl-10 pr-24 h-12 bg-white rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none transition-all shadow-sm",
+            value || dateRange ? "border-2 border-amber-400" : "border border-gray-200 focus:ring-2 focus:ring-black/5 focus:border-gray-300"
+          )}
         />
 
         <div className="absolute inset-y-0 right-0 pr-3 flex items-center gap-2">
@@ -128,7 +131,7 @@ export const DateSearch: React.FC<DateSearchProps> = ({ value, onChange, onDateR
           className={clsx(
             "px-3 py-1.5 rounded-lg text-xs font-medium transition-all whitespace-nowrap shadow-sm border",
             activeFilter === '15days'
-              ? "bg-black text-white border-black"
+              ? "bg-action-primary text-text-on-brand border-action-primary"
               : "bg-white border-gray-200 text-gray-600 hover:bg-gray-50 hover:text-black"
           )}
         >
@@ -139,7 +142,7 @@ export const DateSearch: React.FC<DateSearchProps> = ({ value, onChange, onDateR
           className={clsx(
             "px-3 py-1.5 rounded-lg text-xs font-medium transition-all whitespace-nowrap shadow-sm border",
             activeFilter === 'week'
-              ? "bg-black text-white border-black"
+              ? "bg-action-primary text-text-on-brand border-action-primary"
               : "bg-white border-gray-200 text-gray-600 hover:bg-gray-50 hover:text-black"
           )}
         >
@@ -150,7 +153,7 @@ export const DateSearch: React.FC<DateSearchProps> = ({ value, onChange, onDateR
           className={clsx(
             "px-3 py-1.5 rounded-lg text-xs font-medium transition-all whitespace-nowrap shadow-sm border",
             activeFilter === 'month'
-              ? "bg-black text-white border-black"
+              ? "bg-action-primary text-text-on-brand border-action-primary"
               : "bg-white border-gray-200 text-gray-600 hover:bg-gray-50 hover:text-black"
           )}
         >

@@ -15,10 +15,10 @@ interface MultiSelectProps {
   icon?: React.ElementType;
 }
 
-export const MultiSelect: React.FC<MultiSelectProps> = ({ 
-  options, 
-  selected, 
-  onChange, 
+export const MultiSelect: React.FC<MultiSelectProps> = ({
+  options,
+  selected,
+  onChange,
   placeholder = 'Selecione...',
   icon: Icon
 }) => {
@@ -54,12 +54,11 @@ export const MultiSelect: React.FC<MultiSelectProps> = ({
 
   return (
     <div className="relative w-full" ref={containerRef}>
-      <div 
+      <div
         className={clsx(
           "h-12 border rounded-xl shadow-sm bg-white px-4 py-2 cursor-pointer flex items-center justify-between transition-all duration-200 gap-2",
-          isOpen 
-            ? "border-gray-300 ring-2 ring-black/5" 
-            : "border-gray-200 hover:border-gray-300 hover:bg-gray-50"
+          selected.length > 0 ? "border-2 border-amber-400" : "border-gray-200 hover:border-gray-300 hover:bg-gray-50",
+          isOpen && selected.length === 0 && "border-gray-300 ring-2 ring-black/5"
         )}
         onClick={() => setIsOpen(!isOpen)}
       >
@@ -67,18 +66,18 @@ export const MultiSelect: React.FC<MultiSelectProps> = ({
           {Icon && selected.length === 0 && (
             <Icon className="h-4 w-4 text-gray-400 mr-1 shrink-0" />
           )}
-          
+
           {selected.length === 0 && (
             <span className="text-gray-400 text-sm truncate">{placeholder}</span>
           )}
-          
+
           {selected.length > 0 && (
             <div className="flex flex-wrap gap-1 w-full">
               {selectedLabels.slice(0, 2).map((label, index) => (
                 <span key={index} className="bg-gray-100 text-gray-700 text-xs px-2 py-0.5 rounded-md font-medium whitespace-nowrap flex items-center gap-1">
                   {label}
-                  <X 
-                    className="h-3 w-3 cursor-pointer hover:text-red-500" 
+                  <X
+                    className="h-3 w-3 cursor-pointer hover:text-red-500"
                     onClick={(e) => removeValue(e, options.find(o => o.label === label)?.value || '')}
                   />
                 </span>
@@ -94,7 +93,7 @@ export const MultiSelect: React.FC<MultiSelectProps> = ({
 
         <div className="flex items-center gap-1 shrink-0">
           {selected.length > 0 && (
-            <div 
+            <div
               className="p-1 hover:bg-gray-200 rounded-full transition-colors"
               onClick={(e) => {
                 e.stopPropagation();
