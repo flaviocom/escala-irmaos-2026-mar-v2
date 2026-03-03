@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Calendar as CalendarIcon, Search, X } from 'lucide-react';
-import { startOfWeek, endOfWeek, startOfMonth, endOfMonth, isSameDay, format } from 'date-fns';
+import { startOfWeek, endOfWeek, startOfMonth, endOfMonth, isSameDay, format, addDays } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { clsx } from 'clsx';
 
@@ -23,22 +23,32 @@ export const DateSearch: React.FC<DateSearchProps> = ({ value, onChange, onDateR
     }
   }, [dateRange]);
 
+  const [activeFilter, setActiveFilter] = useState<'15days' | 'week' | 'month' | null>(null);
+
+  // Clear active filter when dateRange is null
+  useEffect(() => {
+    if (!dateRange) {
+      setActiveFilter(null);
+    }
+  }, [dateRange]);
+
   const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
     onChange(val);
     if (val) {
-      onDateRangeChange(null); 
+      onDateRangeChange(null);
+      setActiveFilter(null);
     }
   };
 
-  const handleQuickAction = (type: 'today' | 'week' | 'month') => {
+  const handleQuickAction = (type: '15days' | 'week' | 'month') => {
     const today = new Date();
     let start: Date, end: Date;
 
     switch (type) {
-      case 'today':
+      case '15days':
         start = today;
-        end = today;
+        end = addDays(today, 14);
         break;
       case 'week':
         start = startOfWeek(today, { locale: ptBR });
@@ -50,6 +60,7 @@ export const DateSearch: React.FC<DateSearchProps> = ({ value, onChange, onDateR
         break;
     }
 
+    setActiveFilter(type);
     onDateRangeChange({ start, end });
     // Query update handled by useEffect
   };
@@ -59,7 +70,8 @@ export const DateSearch: React.FC<DateSearchProps> = ({ value, onChange, onDateR
       // Parse as local date to avoid timezone issues
       const [year, month, day] = e.target.value.split('-').map(Number);
       const date = new Date(year, month - 1, day);
-      
+
+      setActiveFilter(null);
       onDateRangeChange({ start: date, end: date });
       // Query update handled by useEffect
     }
@@ -71,59 +83,79 @@ export const DateSearch: React.FC<DateSearchProps> = ({ value, onChange, onDateR
         <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
           <Search className="h-4 w-4 text-gray-400 group-focus-within:text-black transition-colors" />
         </div>
-        
+
         <input
           type="text"
           value={value}
           onChange={handleTextChange}
           placeholder="Buscar data (ex: 25/12) ou dia..."
-          className="w-full pl-10 pr-10 h-12 bg-white border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-black/5 focus:border-gray-300 transition-all shadow-sm"
+          className="w-full pl-10 pr-24 h-12 bg-white border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-black/5 focus:border-gray-300 transition-all shadow-sm"
         />
-        
-        {value && (
-          <button
-            onClick={() => {
-              onChange('');
-              onDateRangeChange(null);
-            }}
-            className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600"
-          >
-            <X className="h-4 w-4" />
-          </button>
-        )}
+
+        <div className="absolute inset-y-0 right-0 pr-3 flex items-center gap-2">
+          {value && (
+            <button
+              onClick={() => {
+                onChange('');
+                onDateRangeChange(null);
+                setActiveFilter(null);
+              }}
+              className="flex items-center text-red-500 hover:text-red-700 hover:bg-red-50 p-1 rounded-md transition-colors"
+              title="Limpar busca"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          )}
+
+          <div className="relative flex items-center h-full">
+            <input
+              type="date"
+              className="absolute inset-0 opacity-0 cursor-pointer w-full h-full z-10"
+              onChange={handleDateChange}
+              title="Selecionar data"
+            />
+            <button className="p-1.5 text-gray-400 hover:text-black bg-white hover:bg-gray-50 rounded-lg transition-colors">
+              <CalendarIcon className="h-5 w-5" />
+            </button>
+          </div>
+        </div>
       </div>
 
       {/* Quick Actions */}
       <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-hide">
         <button
-          onClick={() => handleQuickAction('today')}
-          className="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-xs font-medium text-gray-600 hover:bg-gray-50 hover:text-black transition-colors whitespace-nowrap shadow-sm"
+          onClick={() => handleQuickAction('15days')}
+          className={clsx(
+            "px-3 py-1.5 rounded-lg text-xs font-medium transition-all whitespace-nowrap shadow-sm border",
+            activeFilter === '15days'
+              ? "bg-black text-white border-black"
+              : "bg-white border-gray-200 text-gray-600 hover:bg-gray-50 hover:text-black"
+          )}
         >
-          Hoje
+          Próximos 15 dias
         </button>
         <button
           onClick={() => handleQuickAction('week')}
-          className="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-xs font-medium text-gray-600 hover:bg-gray-50 hover:text-black transition-colors whitespace-nowrap shadow-sm"
+          className={clsx(
+            "px-3 py-1.5 rounded-lg text-xs font-medium transition-all whitespace-nowrap shadow-sm border",
+            activeFilter === 'week'
+              ? "bg-black text-white border-black"
+              : "bg-white border-gray-200 text-gray-600 hover:bg-gray-50 hover:text-black"
+          )}
         >
           Esta Semana
         </button>
         <button
           onClick={() => handleQuickAction('month')}
-          className="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-xs font-medium text-gray-600 hover:bg-gray-50 hover:text-black transition-colors whitespace-nowrap shadow-sm"
+          className={clsx(
+            "px-3 py-1.5 rounded-lg text-xs font-medium transition-all whitespace-nowrap shadow-sm border",
+            activeFilter === 'month'
+              ? "bg-black text-white border-black"
+              : "bg-white border-gray-200 text-gray-600 hover:bg-gray-50 hover:text-black"
+          )}
         >
           Este Mês
         </button>
-        
-        <div className="relative ml-auto">
-          <input 
-            type="date" 
-            className="absolute inset-0 opacity-0 cursor-pointer w-full h-full z-10"
-            onChange={handleDateChange}
-          />
-          <button className="p-2 text-gray-400 hover:text-black bg-white hover:bg-gray-50 rounded-lg border border-gray-200 shadow-sm transition-colors">
-            <CalendarIcon className="h-4 w-4" />
-          </button>
-        </div>
       </div>
     </div>
   );

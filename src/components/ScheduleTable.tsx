@@ -93,9 +93,10 @@ export const ScheduleTable: React.FC<ScheduleTableProps> = ({
 
   // Scroll to today on mount
   useEffect(() => {
-    if (!hasScrolled.current && scrollRef.current) {
-      // Use 'center' block alignment to ensure visibility regardless of sticky headers
-      scrollRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    if (!hasScrolled.current && scrollRef.current && months.length > 0) {
+      setTimeout(() => {
+        scrollRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 300); // Small delay to let DOM render completely
       hasScrolled.current = true;
     }
   }, [months]);
