@@ -12,7 +12,7 @@ interface StatsViewProps {
 export const StatsView: React.FC<StatsViewProps> = ({ shifts }) => {
   const stats = useMemo(() => {
     const counts: Record<string, { total: number; byMonth: Record<string, number> }> = {};
-    
+
     BROTHERS.forEach(b => {
       counts[b.id] = { total: 0, byMonth: {} };
     });
@@ -72,9 +72,12 @@ export const StatsView: React.FC<StatsViewProps> = ({ shifts }) => {
               return (
                 <tr key={brother.id} className={clsx(
                   "hover:bg-surface-subtle transition-colors",
-                  idx % 2 === 0 ? "bg-surface-card" : "bg-surface-subtle/30"
+                  idx % 2 === 0 ? "bg-[#ffffff]" : "bg-[#f9fafb]"
                 )}>
-                  <td className="px-space-4 py-space-3 font-medium text-text-primary sticky left-0 bg-inherit border-r border-border-subtle shadow-[2px_0_5px_-2px_rgba(0,0,0,0.05)]">
+                  <td className={clsx(
+                    "px-space-4 py-space-3 font-medium text-text-primary sticky left-0 z-10 border-r border-border-subtle shadow-[2px_0_5px_-2px_rgba(0,0,0,0.05)]",
+                    idx % 2 === 0 ? "bg-[#ffffff]" : "bg-[#f9fafb]"
+                  )}>
                     {brother.name}
                   </td>
                   <td className="px-space-4 py-space-3 text-center font-bold text-action-primary bg-surface-subtle/50">
