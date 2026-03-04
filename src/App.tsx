@@ -245,55 +245,6 @@ function App() {
               )}
             </button>
           </div>
-
-          {/* Barra de Filtros Rápidos (Meli Style) - Somente em Schedule */}
-          {view === 'schedule' && (
-            <div className="border-t border-gray-50 bg-white">
-              <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-3 px-4">
-                {/* Chip Mês */}
-                <button 
-                  onClick={() => setIsMobileMenuOpen(true)}
-                  className={clsx(
-                    "flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all border",
-                    selectedMonthStrs.length > 0 
-                      ? "bg-indigo-600 text-white border-indigo-600 shadow-sm"
-                      : "bg-gray-50 text-gray-700 border-gray-200 hover:bg-gray-100"
-                  )}
-                >
-                  Mês
-                  {selectedMonthStrs.length > 0 ? (
-                    <span className="bg-white/20 px-1.5 rounded-md text-[10px]">{selectedMonthStrs.length}</span>
-                  ) : <ChevronDown className="w-3 h-3 opacity-50" />}
-                </button>
-
-                {/* Chip Irmão */}
-                <button 
-                  onClick={() => setIsMobileMenuOpen(true)}
-                  className={clsx(
-                    "flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all border",
-                    selectedBrotherIds.length > 0 
-                      ? "bg-indigo-600 text-white border-indigo-600 shadow-sm"
-                      : "bg-gray-50 text-gray-700 border-gray-200 hover:bg-gray-100"
-                  )}
-                >
-                  Irmão
-                  {selectedBrotherIds.length > 0 ? (
-                    <span className="bg-white/20 px-1.5 rounded-md text-[10px]">{selectedBrotherIds.length}</span>
-                  ) : <ChevronDown className="w-3 h-3 opacity-50" />}
-                </button>
-
-                {/* Chip Limpar (se houver filtros) */}
-                {activeFiltersCount > 0 && (
-                  <button 
-                    onClick={clearFilters}
-                    className="flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-bold text-red-600 bg-red-50/50 border border-red-100 hover:bg-red-100/50 whitespace-nowrap"
-                  >
-                    Limpar
-                  </button>
-                )}
-              </div>
-            </div>
-          )}
         </header>
 
         {/* View renderizada (Container onde a foto será tirada) */}
