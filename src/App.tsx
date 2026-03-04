@@ -212,20 +212,20 @@ function App() {
 
         {/* Header Mobile */}
         <header className="md:hidden bg-white border-b border-gray-200 sticky top-0 z-30 px-3 sm:px-4 h-16 flex items-center justify-between shadow-sm overflow-hidden gap-1">
-          <div className="flex items-center gap-2 shrink-0 max-w-[65%]">
+          <div className="flex items-center gap-2 shrink-0 max-w-[70%]">
             <button
               onClick={() => setIsMobileMenuOpen(true)}
               className="p-1 -ml-1 text-gray-800 hover:bg-gray-100 rounded-lg transition-colors shrink-0"
             >
               <Menu className="w-6 h-6 sm:w-7 sm:h-7" />
             </button>
-            <div className="flex items-center gap-2 overflow-hidden">
-              <img src={logo} alt="Logo CCB" className="h-6 sm:h-8 w-auto object-contain shrink-0 hidden sm:block" />
+            <div className="flex items-center gap-1.5 overflow-hidden">
+              <img src={logo} alt="Logo CCB" className="h-6 sm:h-8 w-auto object-contain shrink-0" />
               <div className="truncate">
-                <h1 className="text-xs sm:text-sm font-bold text-text-primary tracking-tight leading-none uppercase truncate">
+                <h1 className="text-[11px] sm:text-sm font-bold text-text-primary tracking-tight leading-none uppercase truncate">
                   Escala Porteiros
                 </h1>
-                <p className="text-[9px] sm:text-[10px] text-text-secondary mt-0.5 font-medium tracking-wider truncate">JD. SÃO LUIZ - 2026</p>
+                <p className="text-[9px] sm:text-[10px] text-text-secondary mt-0.5 font-medium tracking-wider truncate">JD SÃO LUIZ-2026</p>
               </div>
             </div>
           </div>
