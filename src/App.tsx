@@ -7,7 +7,7 @@ import { StatsView } from './components/StatsView';
 import { ValidationView } from './components/ValidationView';
 import { MultiSelect } from './components/MultiSelect';
 import { DateSearch } from './components/DateSearch';
-import { Calendar, Download, Filter, X, LayoutGrid, BarChart3, ShieldCheck, Menu } from 'lucide-react';
+import { Calendar, Download, Filter, X, LayoutGrid, BarChart3, ShieldCheck, Menu, SlidersHorizontal, ChevronDown } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { clsx } from 'clsx';
@@ -181,22 +181,27 @@ function App() {
         {sidebarContent}
       </aside>
 
-      {/* Drawer Mobile */}
+      {/* Menu / Bottom Sheet Mobile */}
       {isMobileMenuOpen && (
-        <div className="md:hidden fixed inset-0 z-50 flex">
+        <div className="md:hidden fixed inset-0 z-50 flex flex-col justify-end">
           {/* Overlay fundo escuro */}
           <div
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
             onClick={() => setIsMobileMenuOpen(false)}
           />
-          {/* Gaveta */}
-          <div className="relative w-[300px] max-w-[85vw] h-full bg-white shadow-2xl flex flex-col animate-in slide-in-from-left duration-300">
+
+          {/* Botão X fora do painel */}
+          <div className="relative w-full flex justify-end pr-4 mb-3 animate-in fade-in duration-300">
             <button
               onClick={() => setIsMobileMenuOpen(false)}
-              className="absolute top-4 right-4 p-2 bg-gray-100 hover:bg-gray-200 rounded-full z-10 transition-colors"
+              className="p-1 z-10 transition-colors"
             >
-              <X className="w-5 h-5 text-gray-700" />
+              <X className="w-7 h-7 text-white" />
             </button>
+          </div>
+
+          {/* Painel Bottom Sheet */}
+          <div className="relative w-full h-[88vh] max-h-[88vh] bg-white shadow-2xl flex flex-col rounded-t-[24px] overflow-hidden animate-in slide-in-from-bottom duration-300">
             {sidebarContent}
           </div>
         </div>
@@ -225,6 +230,18 @@ function App() {
             </div>
           </div>
         </header>
+
+        {/* Filter Bar (Mobile Only) */}
+        <div className="md:hidden bg-white border-b border-gray-100 px-4 py-3 flex justify-end sticky top-16 z-20 shadow-sm">
+          <button
+            onClick={() => setIsMobileMenuOpen(true)}
+            className="flex items-center gap-2 text-action-primary text-sm font-bold"
+          >
+            <SlidersHorizontal className="w-4 h-4" />
+            Filtros {activeFiltersCount > 0 && `(${activeFiltersCount})`}
+            <ChevronDown className="w-4 h-4" />
+          </button>
+        </div>
 
         {/* View renderizada (Container onde a foto será tirada) */}
         <div className="p-4 sm:p-6 lg:p-8 flex-1 max-w-5xl mx-auto w-full bg-gray-50" id="schedule-container">
