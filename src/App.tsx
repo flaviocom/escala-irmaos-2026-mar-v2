@@ -211,34 +211,89 @@ function App() {
       <main className="flex-1 flex flex-col min-w-0 md:pl-[320px]">
 
         {/* Header Mobile */}
-        <header className="md:hidden bg-white border-b border-gray-200 sticky top-0 z-30 px-3 sm:px-4 h-16 flex items-center justify-between shadow-sm overflow-hidden gap-1">
-          <div className="flex items-center gap-2 shrink-0 max-w-[70%]">
-            <button
-              onClick={() => setIsMobileMenuOpen(true)}
-              className="p-1 -ml-1 text-gray-800 hover:bg-gray-100 rounded-lg transition-colors shrink-0"
-            >
-              <Menu className="w-6 h-6 sm:w-7 sm:h-7" />
-            </button>
-            <div className="flex items-center gap-1.5 overflow-hidden">
-              <img src={logo} alt="Logo CCB" className="h-6 sm:h-8 w-auto object-contain shrink-0" />
-              <div className="truncate">
-                <h1 className="text-[11px] sm:text-sm font-bold text-text-primary tracking-tight leading-none uppercase truncate">
-                  Escala Porteiros
-                </h1>
-                <p className="text-[9px] sm:text-[10px] text-text-secondary mt-0.5 font-medium tracking-wider truncate">JD SÃO LUIZ-2026</p>
+        <header className="md:hidden bg-white border-b border-gray-100 sticky top-0 z-30 flex flex-col shadow-sm">
+          <div className="px-3 sm:px-4 h-16 flex items-center justify-between gap-2 overflow-hidden">
+            <div className="flex items-center gap-3 min-w-0 flex-1">
+              <button
+                onClick={() => setIsMobileMenuOpen(true)}
+                className="p-1.5 -ml-1.5 text-gray-800 hover:bg-gray-100 rounded-xl transition-colors shrink-0"
+              >
+                <Menu className="w-6 h-6" />
+              </button>
+              <div className="flex items-center gap-2 min-w-0">
+                <img src={logo} alt="Logo CCB" className="h-8 w-auto object-contain shrink-0" />
+                <div className="flex flex-col min-w-0">
+                  <h1 className="text-[11px] sm:text-sm font-bold text-gray-900 tracking-tight leading-none uppercase truncate">
+                    Escala Porteiros
+                  </h1>
+                  <p className="text-[9px] sm:text-[10px] text-gray-500 mt-0.5 font-medium tracking-wider truncate uppercase">JD. SÃO LUIZ-2026</p>
+                </div>
               </div>
             </div>
+
+            {/* Filter Toggle Button */}
+            <button
+              onClick={() => setIsMobileMenuOpen(true)}
+              className="flex items-center gap-1.5 text-indigo-600 bg-indigo-50/50 px-3 py-2 rounded-xl text-xs font-bold hover:bg-indigo-100 transition-all shrink-0 border border-indigo-100/50"
+            >
+              <SlidersHorizontal className="w-4 h-4" />
+              <span className="hidden xs:inline">Filtros</span>
+              {activeFiltersCount > 0 && (
+                <span className="flex items-center justify-center bg-indigo-600 text-white min-w-[18px] h-[18px] px-1 rounded-full text-[10px] font-bold">
+                  {activeFiltersCount}
+                </span>
+              )}
+            </button>
           </div>
 
-          {/* Filter Button (Mobile Header) */}
-          <button
-            onClick={() => setIsMobileMenuOpen(true)}
-            className="flex items-center gap-1 sm:gap-1.5 text-action-primary text-[11px] sm:text-sm font-bold whitespace-nowrap hover:bg-blue-50 px-2 py-1.5 rounded-md transition-colors shrink-0"
-          >
-            <SlidersHorizontal className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-            <span>Filtros {activeFiltersCount > 0 && `(${activeFiltersCount})`}</span>
-            <ChevronDown className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-          </button>
+          {/* Barra de Filtros Rápidos (Meli Style) - Somente em Schedule */}
+          {view === 'schedule' && (
+            <div className="border-t border-gray-50 bg-white">
+              <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-3 px-4">
+                {/* Chip Mês */}
+                <button 
+                  onClick={() => setIsMobileMenuOpen(true)}
+                  className={clsx(
+                    "flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all border",
+                    selectedMonthStrs.length > 0 
+                      ? "bg-indigo-600 text-white border-indigo-600 shadow-sm"
+                      : "bg-gray-50 text-gray-700 border-gray-200 hover:bg-gray-100"
+                  )}
+                >
+                  Mês
+                  {selectedMonthStrs.length > 0 ? (
+                    <span className="bg-white/20 px-1.5 rounded-md text-[10px]">{selectedMonthStrs.length}</span>
+                  ) : <ChevronDown className="w-3 h-3 opacity-50" />}
+                </button>
+
+                {/* Chip Irmão */}
+                <button 
+                  onClick={() => setIsMobileMenuOpen(true)}
+                  className={clsx(
+                    "flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all border",
+                    selectedBrotherIds.length > 0 
+                      ? "bg-indigo-600 text-white border-indigo-600 shadow-sm"
+                      : "bg-gray-50 text-gray-700 border-gray-200 hover:bg-gray-100"
+                  )}
+                >
+                  Irmão
+                  {selectedBrotherIds.length > 0 ? (
+                    <span className="bg-white/20 px-1.5 rounded-md text-[10px]">{selectedBrotherIds.length}</span>
+                  ) : <ChevronDown className="w-3 h-3 opacity-50" />}
+                </button>
+
+                {/* Chip Limpar (se houver filtros) */}
+                {activeFiltersCount > 0 && (
+                  <button 
+                    onClick={clearFilters}
+                    className="flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-bold text-red-600 bg-red-50/50 border border-red-100 hover:bg-red-100/50 whitespace-nowrap"
+                  >
+                    Limpar
+                  </button>
+                )}
+              </div>
+            </div>
+          )}
         </header>
 
         {/* View renderizada (Container onde a foto será tirada) */}
